@@ -7,7 +7,6 @@ async web application.
 
 import logging
 import asyncio
-from datetime import datetime
 from aiohttp import web
 
 logging.basicConfig(level=logging.INFO)
