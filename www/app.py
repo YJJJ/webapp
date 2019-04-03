@@ -6,7 +6,7 @@ async web application.
 '''
 
 import logging
-import asyncio, os, json, time
+import asyncio
 from datetime import datetime
 from aiohttp import web
 
