@@ -6,7 +6,7 @@ async web application.
 '''
 
 import logging
-import asyncio,json
+import asyncio
 from aiohttp import web
 
 logging.basicConfig(level=logging.INFO)
