@@ -1,9 +1,10 @@
 # Author: Yjj
 # -*- coding: utf-8 -*-
 import logging;
-
+import sys
+import os
 from www import orm
-from www.config import configs
+
 from www.handlers import cookie2user, COOKIE_NAME
 
 logging.basicConfig(level=logging.INFO)
@@ -14,6 +15,15 @@ from datetime import datetime
 from aiohttp import web
 from jinja2 import Environment, FileSystemLoader
 from www.coroweb import add_routes, add_static
+
+import sys
+
+print(sys.path)
+
+# curPath = os.path.abspath(os.path.dirname(orm))
+# rootPath = os.path.split(curPath)[0]
+# sys.path.append(rootPath)
+
 
 
 def init_jinja2(app, **kw):
