@@ -1,6 +1,6 @@
 # Author: Yjj
 # -*- coding: utf-8 -*-
-from www import config_default
+import config_default
 
 
 class Dict(dict):

@@ -1,9 +1,9 @@
 # Author: Yjj
 # -*- coding: utf-8 -*-
 import logging;
-from www import orm
 
-from www.handlers import cookie2user, COOKIE_NAME
+from handlers import cookie2user, COOKIE_NAME
+import orm
 
 logging.basicConfig(level=logging.INFO)
 
@@ -12,7 +12,7 @@ from datetime import datetime
 
 from aiohttp import web
 from jinja2 import Environment, FileSystemLoader
-from www.coroweb import add_routes, add_static
+from coroweb import add_routes, add_static
 
 
 def init_jinja2(app, **kw):
