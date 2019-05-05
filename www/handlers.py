@@ -16,13 +16,11 @@ _COOKIE_KEY = configs.session.secret
 _RE_EMAIL = re.compile(r'^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$')
 _RE_SHA1 = re.compile(r'^[0-9a-f]{40}$')
 
-_RE_EMAIL = re.compile(r'^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$')
-_RE_SHA1 = re.compile(r'^[0-9a-f]{40}$')
 
-
+# 检查登录用户是否是管理员，有些接口需要管理员权限才能调
 def check_admin(request):
     if request.__user__ is None or not request.__user__.admin:
-        raise APIPermissionError()
+        raise APIPermissionError(message='权限不足')
 
 
 def get_page_index(page_str):
@@ -110,6 +108,7 @@ async def get_blog(id):
     }
 
 
+# 注册页面
 @get('/register')
 def register():
     return {
@@ -117,6 +116,7 @@ def register():
     }
 
 
+# 登录页面
 @get('/signin')
 async def signin():
     return {
@@ -124,6 +124,7 @@ async def signin():
     }
 
 
+# 提交注册信息
 @post('/api/authenticate')
 async def authenticate(*, email, passwd):
     if not email:
@@ -151,6 +152,7 @@ async def authenticate(*, email, passwd):
     return r
 
 
+# 登出页面
 @get('/signout')
 def signout(request):
     referer = request.headers.get('Referer')
@@ -255,10 +257,6 @@ async def api_get_users(*, page='1'):
     for u in users:
         u.passwd = '******'
     return dict(page=p, users=users)
-
-
-_RE_EMAIL = re.compile(r'^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$')
-_RE_SHA1 = re.compile(r'^[0-9a-f]{40}$')
 
 
 @post('/api/users')

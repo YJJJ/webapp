@@ -31,12 +31,8 @@
 
     $(function () {
         getJSON('/api/comments', {
-            page: {
-        {
-            page_index
-        }
-    }
-    },
+            page: '{{page_index}}'
+            },
 
         function (err, results) {
             if (err) {

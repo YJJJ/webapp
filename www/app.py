@@ -1,8 +1,6 @@
 # Author: Yjj
 # -*- coding: utf-8 -*-
 import logging;
-import sys
-import os
 from www import orm
 
 from www.handlers import cookie2user, COOKIE_NAME
@@ -15,15 +13,6 @@ from datetime import datetime
 from aiohttp import web
 from jinja2 import Environment, FileSystemLoader
 from www.coroweb import add_routes, add_static
-
-import sys
-
-print(sys.path)
-
-# curPath = os.path.abspath(os.path.dirname(orm))
-# rootPath = os.path.split(curPath)[0]
-# sys.path.append(rootPath)
-
 
 
 def init_jinja2(app, **kw):
@@ -152,7 +141,7 @@ async def init(loop):
     init_jinja2(app, filters=dict(datetime=datetime_filter))
     add_routes(app, 'handlers')
     add_static(app)
-    srv = await loop.create_server(app.make_handler(), '127.0.0.1', 9000)
+    srv = await loop.create_server(app._make_handler(), '127.0.0.1', 9000)
     logging.info('server started at http://127.0.0.1:9000...')
     return srv
 
