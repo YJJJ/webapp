@@ -34,6 +34,7 @@ def get_page_index(page_str):
     return p
 
 
+# 将登录的账号转化为cookie
 def user2cookie(user, max_age):
     '''
     Generate cookie str by user.
@@ -45,12 +46,14 @@ def user2cookie(user, max_age):
     return '-'.join(L)
 
 
+# 将文本转化为html格式
 def text2html(text):
     lines = map(lambda s: '<p>%s</p>' % s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'),
                 filter(lambda s: s.strip() != '', text.split('\n')))
     return ''.join(lines)
 
 
+# 将cookie还原成用户
 async def cookie2user(cookie_str):
     '''
     Parse cookie and load user if cookie is valid.

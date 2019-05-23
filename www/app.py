@@ -1,16 +1,19 @@
 # Author: Yjj
 # -*- coding: utf-8 -*-
+# python的日志模块
 import logging;
 
 from handlers import cookie2user, COOKIE_NAME
+# 对象关系映射
 import orm
 
-logging.basicConfig(level=logging.INFO)
+logging.getLogger().setLevel(logging.INFO)
 
 import asyncio, os, json, time
 from datetime import datetime
-
+# 异步框架aiohttp
 from aiohttp import web
+# 前端模板引擎jinja2
 from jinja2 import Environment, FileSystemLoader
 from coroweb import add_routes, add_static
 
@@ -37,6 +40,7 @@ def init_jinja2(app, **kw):
     app['__templating__'] = env
 
 
+# 打印日志
 async def logger_factory(app, handler):
     async def logger(request):
         logging.info('Request: %s %s' % (request.method, request.path))
@@ -46,6 +50,7 @@ async def logger_factory(app, handler):
     return logger
 
 
+# 判断登录
 async def auth_factory(app, handler):
     async def auth(request):
         logging.info('check user: %s %s' % (request.method, request.path))
@@ -119,6 +124,7 @@ async def response_factory(app, handler):
     return response
 
 
+# 页面上博客创建时间显示
 def datetime_filter(t):
     delta = int(time.time() - t)
     if delta < 60:
@@ -136,10 +142,12 @@ def datetime_filter(t):
 async def init(loop):
     await orm.create_pool(loop=loop, host='127.0.0.1', port=3306, user='root', password='123456', db='awesome')
     app = web.Application(loop=loop, middlewares=[
-        logger_factory, auth_factory, response_factory
+        logger_factory, auth_factory, data_factory, response_factory
     ])
     init_jinja2(app, filters=dict(datetime=datetime_filter))
+    # 加载全部的方法
     add_routes(app, 'handlers')
+    # 加载静态数据
     add_static(app)
     srv = await loop.create_server(app._make_handler(), '127.0.0.1', 9000)
     logging.info('server started at http://127.0.0.1:9000...')

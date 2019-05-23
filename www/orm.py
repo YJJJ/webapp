@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import asyncio, logging
+# 异步驱动程序aiomysql
 import aiomysql
 
 

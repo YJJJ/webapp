@@ -1,22 +1,24 @@
+import logging;
+
+logging.basicConfig(level=logging.INFO)
 import asyncio
-
-import sys
-
-import www.orm as orm
-from www.models import User, Blog, Comment
+from aiohttp import web
 
 
-async def test(loop):
-    await orm.create_pool(loop=loop, host='127.0.0.1', user='root', password='123456', db='awesome')
+# 支付宝回调返回success
+def index(request):
+    return web.Response(body='success')
 
-    u = User(name='Test', email='yjj6@example.com', passwd='123456', image='about:blank')
 
-    await u.save()
-    await orm.destory_pool()
+@asyncio.coroutine
+def init(loop):
+    app = web.Application(loop=loop)
+    app.router.add_route('POST', '/', index)
+    srv = yield from loop.create_server(app.make_handler(), '127.0.0.1', 9000)
+    logging.info('server started at http://127.0.0.1:9000...')
+    return srv
 
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(test(loop))
-loop.close()
-# if loop.is_closed():
-#     sys.exit()
+loop.run_until_complete(init(loop))
+loop.run_forever()
